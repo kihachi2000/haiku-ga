@@ -6,6 +6,9 @@ pub type Result<T> = std::result::Result<T, Error>;
 pub enum Error {
     DotEnvNotFound,
     VariableNotFound(String),
+    FileWriteError(String),
+    ConnectionError,
+    ParseError,
 }
 
 impl Display for Error {
@@ -13,6 +16,9 @@ impl Display for Error {
         match self {
             Self::DotEnvNotFound => write!(f, ".env not found"),
             Self::VariableNotFound(key) => write!(f, r#"variable "{}" not found"#, key),
+            Self::FileWriteError(file_name) => write!(f, "failed to write to {}", file_name),
+            Self::ConnectionError => write!(f, "failed to get response from Gemini"),
+            Self::ParseError => write!(f, "failed to parse response"),
         }
     }
 }
